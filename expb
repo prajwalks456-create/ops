@@ -1,0 +1,47 @@
+#include <stdio.h>
+#include <dirent.h>
+
+int main()
+{
+    DIR *d;
+    struct dirent *entry;
+
+    /* open current directory */
+    d = opendir(".");
+
+    if (d == NULL)
+    {
+        printf("Directory cannot be opened\n");
+        return 1;
+    }
+    /* read directory entries */
+    printf("Directory contents:\n");
+    while ((entry = readdir(d)) != NULL)
+    {
+        printf("%s\n", entry->d_name);
+    }
+    /* close directory */
+    closedir(d);
+    return 0;
+}
+
+
+~/OS lab$ gcc oslab2.c -o oslab2
+~/OS lab$ ./oslab2
+Directory contents:
+.
+..
+a.out
+sample.txt
+2026-01-27-file-2.term
+oslab2.c
+2026-01-13-file-3.term
+2026-01-13-file-2.term
+oslab2
+2026-01-27-file-3.term
+OSLAB1
+2026-01-27-file-1.term
+2026-01-27-file-4.term
+2026-01-13-file-1.term
+OSLAB1.c
+~/OS lab$ 
