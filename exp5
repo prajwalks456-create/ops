@@ -1,0 +1,119 @@
+#include <stdio.h>
+
+void firstFit(int blockSize[], int m, int processSize[], int n)
+{
+    int allocation[n];
+
+    // Initialize all allocations to -1
+    for (int i = 0; i < n; i++)
+        allocation[i] = -1;
+
+    // Allocate memory blocks to processes
+    for (int i = 0; i < n; i++)
+    {
+        for (int j = 0; j < m; j++)
+        {
+            if (blockSize[j] >= processSize[i])
+            {
+                allocation[i] = j;
+                blockSize[j] -= processSize[i];
+                break;
+            }
+        }
+    }
+
+    printf("\nFIRST FIT\n");
+    printf("Process No.\tProcess Size\tBlock No.\n");
+
+    for (int i = 0; i < n; i++)
+    {
+        if (allocation[i] != -1)
+            printf("%d\t\t%d\t\t%d\n", i + 1, processSize[i], allocation[i] + 1);
+        else
+            printf("%d\t\t%d\t\tNot Allocated\n", i + 1, processSize[i]);
+    }
+}
+
+void bestFit(int blockSize[], int m, int processSize[], int n)
+{
+    int allocation[n];
+
+    // Initialize all allocations to -1
+    for (int i = 0; i < n; i++)
+        allocation[i] = -1;
+
+    // Allocate memory blocks to processes
+    for (int i = 0; i < n; i++)
+    {
+        int bestIdx = -1;
+
+        for (int j = 0; j < m; j++)
+        {
+            if (blockSize[j] >= processSize[i])
+            {
+                if (bestIdx == -1 || blockSize[j] < blockSize[bestIdx])
+                    bestIdx = j;
+            }
+        }
+
+        if (bestIdx != -1)
+        {
+            allocation[i] = bestIdx;
+            blockSize[bestIdx] -= processSize[i];
+        }
+    }
+
+    printf("\nBEST FIT\n");
+    printf("Process No.\tProcess Size\tBlock No.\n");
+
+    for (int i = 0; i < n; i++)
+    {
+        if (allocation[i] != -1)
+            printf("%d\t\t%d\t\t%d\n", i + 1, processSize[i], allocation[i] + 1);
+        else
+            printf("%d\t\t%d\t\tNot Allocated\n", i + 1, processSize[i]);
+    }
+}
+
+int main()
+{
+    int blockSize[] = {100, 500, 200, 300, 600};
+    int processSize[] = {212, 417, 112, 426};
+
+    int m = 5;
+    int n = 4;
+
+    int block1[5], block2[5];
+
+    // Copy original block sizes
+    for (int i = 0; i < m; i++)
+    {
+        block1[i] = blockSize[i];
+        block2[i] = blockSize[i];
+    }
+
+    firstFit(block1, m, processSize, n);
+    bestFit(block2, m, processSize, n);
+
+    return 0;
+}
+
+~/OS lab$ ls
+2026-01-13-file-1.term  2026-01-13-file-3.term  2026-01-27-file-2.term  2026-01-27-file-4.term  2026-02-10-file-1.term  Exp4    Exp5.c  OSLAB1.c  exp3    oslab2    sample.txt
+2026-01-13-file-2.term  2026-01-27-file-1.term  2026-01-27-file-3.term  2026-01-27-file-5.term  2026-02-10-file-2.term  Exp4.c  OSLAB1  a.out     exp3.c  oslab2.c
+~/OS lab$ gcc Exp5.c -o Exp5
+~/OS lab$ ./Exp5
+
+FIRST FIT
+Process No.     Process Size    Block No.
+1               212             2
+2               417             5
+3               112             2
+4               426             Not Allocated
+
+BEST FIT
+Process No.     Process Size    Block No.
+1               212             4
+2               417             2
+3               112             3
+4               426             5
