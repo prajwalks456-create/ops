@@ -1,0 +1,46 @@
+ #include<stdio.h>
+#include<unistd.h>
+#include<sys/types.h>
+int main()
+{
+printf("Before declaring FORK.");
+printf("The value of PID is : ");
+printf("%d",getpid());
+printf("The value of PPID is : ");
+printf("%d",getppid());
+
+pid_t pid=fork();//Used to create child process
+if(pid==0)//Child Process
+{
+printf("After declaring FORK.");
+printf("The value of PID is zero.");
+printf("The value of PID is : ");
+printf("%d",getpid());
+printf("The value of PPID is : ");
+printf("%d",getppid());
+}
+else if(pid>0)//Parent Process
+{
+printf("After declaring FORK.");
+printf("The value of PID is greater than zero.");
+printf("The value of PID is : ");
+printf("%d",getpid());
+printf("The value of PPID is : ");
+printf("%d",getppid());
+}
+else//Error
+{
+printf("After declaring FORK.");
+printf("The value of PID is less than zero.");
+printf("The value of PID is : ");
+printf("%d",getpid());
+printf("The value of PPID is : ");
+printf("%d",getppid());
+}
+
+}
+
+
+~/sch,c$ gcc OSLAB3.C -o OSLAB3
+~/sch,c$ ./OSLAB3
+Before declaring FORK.The value of PID is : 1117The value of PPID is : 1049After declaring FORK.The value of PID is greater than zero.The value of PID is : 1117The value of PPID is : 1049Before declaring FORK.The value of PID is : 1117The value of PPID is : 1049After declaring FORK.The value of PID is zero.The value of PID is : 1118The value of PPID is : 1117~/sch,c$ 
